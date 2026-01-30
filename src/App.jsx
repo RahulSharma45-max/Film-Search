@@ -31,10 +31,13 @@ const App = () => {
   };
 
   const addFavoriteMovie = (movie) => {
-    const newFavoriteList = [...favorites, movie];
     if (!favorites.some(fav => fav.imdbID === movie.imdbID)) {
-        setFavorites(newFavoriteList);
-        saveToLocalStorage(newFavoriteList);
+      const newFavoriteList = [...favorites, movie];
+      setFavorites(newFavoriteList);
+      saveToLocalStorage(newFavoriteList);
+
+      // ✅ Popup message
+      alert(`🎉 "${movie.Title}" added to favorites!`);
     }
   };
 
@@ -45,6 +48,9 @@ const App = () => {
     setFavorites(newFavoriteList);
     saveToLocalStorage(newFavoriteList);
   };
+
+  const isFavorite = (movie) =>
+    favorites.some(fav => fav.imdbID === movie.imdbID);
 
   return (
     <div className="app">
@@ -61,32 +67,31 @@ const App = () => {
       </div>
 
       <div className="container">
-        {movies?.length > 0 ? (
+        {movies.length > 0 ? (
           movies.map((movie) => (
-            <MovieCard 
-              movie={movie} 
-              key={movie.imdbID} 
+            <MovieCard
+              key={movie.imdbID}
+              movie={movie}
               handleFavoriteClick={addFavoriteMovie}
-              actionLabel="Add to Favorites"
+              isFavorite={isFavorite(movie)}
             />
           ))
         ) : (
-          <div className="empty">
-            <h2>Search for a movie to begin</h2>
-          </div>
+          <h2>Search for a movie to begin</h2>
         )}
       </div>
 
       {favorites.length > 0 && (
         <>
-          <h2 className='fav-header'>My Favorites</h2>
+          <h2 className="fav-header">My Favorites</h2>
           <div className="container">
             {favorites.map((movie) => (
-              <MovieCard 
-                movie={movie} 
-                key={movie.imdbID} 
+              <MovieCard
+                key={movie.imdbID}
+                movie={movie}
                 handleFavoriteClick={removeFavoriteMovie}
-                actionLabel="Remove"
+                isFavorite={true}
+                remove
               />
             ))}
           </div>

@@ -1,25 +1,24 @@
-import React from 'react';
-
-const MovieCard = ({ movie, handleFavoriteClick, actionLabel }) => {
+const MovieCard = ({ movie, handleFavoriteClick, isFavorite, remove }) => {
   return (
     <div className="movie">
-      <div>
-        <p>{movie.Year}</p>
-      </div>
-      <div>
-        <img
-          src={movie.Poster !== 'N/A' ? movie.Poster : 'https://via.placeholder.com/400'}
-          alt={movie.Title}
-        />
-      </div>
+      <img
+        src={movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/250x375"}
+        alt={movie.Title}
+      />
+
       <div className="movie-info">
-        <span>{movie.Type}</span>
         <h3>{movie.Title}</h3>
-        <button 
-            className="fav-btn"
-            onClick={() => handleFavoriteClick(movie)}
+
+        <button
+          className="fav-btn"
+          onClick={() => handleFavoriteClick(movie)}
+          disabled={isFavorite && !remove}
         >
-            {actionLabel}
+          {remove
+            ? "Remove"
+            : isFavorite
+            ? "Added to Favorites"
+            : "Add to Favorites"}
         </button>
       </div>
     </div>
